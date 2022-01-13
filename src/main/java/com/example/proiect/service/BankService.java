@@ -28,18 +28,18 @@ public class BankService {
         this.paymentRepository = paymentRepository;
     }
 
-    public BankDetails saveNewBankDetails(BankDetails bankDetails) {
+    public BankDetails saveBankDetails(BankDetails bankDetails) {
         return bankDetailsRepository.save(bankDetails);
     }
 
-    public Bank saveNewBank(Bank bank, int bankDetailsId) {
+    public Bank saveBank(Bank bank, int bankDetailsId) {
         BankDetails bankDetails = bankDetailsRepository.findById(bankDetailsId).orElseThrow(() -> new RuntimeException("Id not valid!!"));
 
         bank.setBankDetails(bankDetails);
         return bankRepository.save(bank);
     }
 
-    public Employee saveNewEmployee(Employee employee, int bankId) {
+    public Employee saveEmployee(Employee employee, int bankId) {
         Bank bank = bankRepository.findById(bankId).orElseThrow(BankNotFoundException::new);
 
         employee.setBank(bank);
@@ -47,7 +47,7 @@ public class BankService {
         return employeeRepository.save(employee);
     }
 
-    public Client saveNewClient(Client client, int employeeId, int bankId) {
+    public Client saveClient(Client client, int employeeId, int bankId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
         Bank bank = bankRepository.findById(bankId).orElseThrow(BankNotFoundException::new);
 
@@ -57,7 +57,7 @@ public class BankService {
         return clientRepository.save(client);
     }
 
-    public Account saveNewAccount(Account account, int clientId) {
+    public Account saveAccount(Account account, int clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(ClientNotFoundException::new);
 
         account.setClient(client);
@@ -65,7 +65,7 @@ public class BankService {
         return accountRepository.save(account);
     }
 
-    public Payment saveNewPayment(Payment payment, int clientId) {
+    public Payment savePayment(Payment payment, int clientId) {
         Client client = clientRepository.findById(clientId).orElseThrow(ClientNotFoundException::new);
 
         payment.setClient(client);
@@ -83,6 +83,14 @@ public class BankService {
 
     public List<Client> retrieveClients() {
         return clientRepository.findAll();
+    }
+
+    public List<Account> retrieveAccounts() {
+        return accountRepository.findAll();
+    }
+
+    public List<Payment> retrievePayments(){
+        return paymentRepository.findAll();
     }
 
     public List<Client> retrieveClientsByAccounts(String currency) {
@@ -109,5 +117,21 @@ public class BankService {
         return bankRepository.findBanksByCity(city);
     }
 
+    public boolean deleteClientById(int clientId) {
+        Client client = clientRepository.findById(clientId).orElseThrow(ClientNotFoundException::new);
+        clientRepository.deleteById(clientId);
+        return true;
+    }
 
+    public boolean deleteAccountById(int accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found!!"));
+        accountRepository.deleteById(accountId);
+        return true;
+    }
+
+    public boolean deletePaymentById(int paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found!!"));
+        paymentRepository.deleteById(paymentId);
+        return true;
+    }
 }

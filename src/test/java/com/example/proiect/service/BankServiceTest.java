@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Optional;
 
@@ -40,7 +39,7 @@ class BankServiceTest {
         BankDetails bankDetails1 = new BankDetails("address1", "city1");
 
         when(bankDetailsRepository.save(bankDetails1)).thenReturn(bankDetails1);
-        BankDetails result = bankService.saveNewBankDetails(bankDetails1);
+        BankDetails result = bankService.saveBankDetails(bankDetails1);
 
         assertNotNull(result);
         assertEquals(bankDetails1.getAddress(), result.getAddress());
@@ -57,7 +56,7 @@ class BankServiceTest {
         when(bankDetailsRepository.findById(bankDetailsId)).thenReturn(Optional.of(bankDetails));
         when(bankRepository.save(bank)).thenReturn(bank);
 
-        Bank result = bankService.saveNewBank(bank, bankDetailsId);
+        Bank result = bankService.saveBank(bank, bankDetailsId);
 
         assertEquals(bank.getBankName(), result.getBankName());
     }
@@ -73,7 +72,7 @@ class BankServiceTest {
         when(bankRepository.findById(bankId)).thenReturn(Optional.of(bank));
         when(employeeRepository.save(employee)).thenReturn(employee);
 
-        Employee result = bankService.saveNewEmployee(employee, bankId);
+        Employee result = bankService.saveEmployee(employee, bankId);
 
         assertNotNull(result);
         assertEquals(employee.getEmployeeName(), result.getEmployeeName());
@@ -93,7 +92,7 @@ class BankServiceTest {
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         when(clientRepository.save(client)).thenReturn(client);
 
-        Client result = bankService.saveNewClient(client, employeeId, bankId);
+        Client result = bankService.saveClient(client, employeeId, bankId);
 
         assertNotNull(result);
         assertEquals(client.getClientName(), result.getClientName());
@@ -112,7 +111,7 @@ class BankServiceTest {
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(accountRepository.save(account)).thenReturn(account);
 
-        Account result = bankService.saveNewAccount(account, clientId);
+        Account result = bankService.saveAccount(account, clientId);
 
         assertNotNull(result);
         assertEquals(account.getAccountType(), result.getAccountType());
@@ -131,7 +130,7 @@ class BankServiceTest {
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(paymentRepository.save(payment)).thenReturn(payment);
 
-        Payment result = bankService.saveNewPayment(payment, clientId);
+        Payment result = bankService.savePayment(payment, clientId);
 
         assertNotNull(result);
         assertEquals(payment.getPaymentValue(), result.getPaymentValue());
@@ -149,7 +148,7 @@ class BankServiceTest {
         when(bankRepository.findById(bankId)).thenReturn(Optional.of(bank));
 
         try{
-            Employee result = bankService.saveNewEmployee(employee, bankId);
+            Employee result = bankService.saveEmployee(employee, bankId);
         }catch (RuntimeException e) {
             assertEquals("Some exception occured", e.getMessage());
             verify(bankRepository, times(0)).findById(bankId);
