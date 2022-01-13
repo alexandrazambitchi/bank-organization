@@ -51,13 +51,44 @@ public class BankController {
         return ResponseEntity.ok().body(bankService.retrieveBanks());
     }
 
-    @GetMapping("/employee")
+    @GetMapping("/employees")
     public ResponseEntity<List<Employee>> retrieveEmployees() {
         return ResponseEntity.ok().body(bankService.retrieveEmployees());
     }
 
-    @GetMapping("/client")
+    @GetMapping("/clients")
     public ResponseEntity<List<Client>> retrieveClients() {
         return ResponseEntity.ok().body(bankService.retrieveClients());
+    }
+
+    @GetMapping("/clientsByEmployee")
+    public ResponseEntity<List<Client>> retrieveClientsByEmployeeName(@RequestParam String employeeName) {
+        return ResponseEntity.ok().body(bankService.retrieveClientsByEmployeeName(employeeName));
+    }
+
+    @GetMapping("/accountsInCurrency")
+    public ResponseEntity<List<Account>> retrieveAccountsByCurrency(@RequestParam String currency){
+        return ResponseEntity.ok().body(bankService.retrieveAccountsByCurrency(currency));
+    }
+
+    @GetMapping("/clientsByAccountsInCurrency")
+    public ResponseEntity<List<Client>> retrieveClientsByAccounts(@RequestParam String currency){
+        return ResponseEntity.ok().body(bankService.retrieveClientsByAccounts(currency));
+    }
+
+    @GetMapping("/employeesManagingFirms")
+    public ResponseEntity<List<Employee>> retrieveEmployeesManagingFirms(@RequestParam String clientType){
+        return ResponseEntity.ok().body(bankService.retrieveEmployeesManagingFirms(clientType));
+    }
+
+    @GetMapping("/clientsPaymentsBig")
+    public ResponseEntity<List<Client>> retrieveClientsPayments(@RequestParam Integer value){
+        return ResponseEntity.ok().body(bankService.retrieveClientsPayments(value));
+    }
+
+    @GetMapping("/banksInCity")
+    public ResponseEntity<List<Bank>> retrieveBanksInCity(@RequestParam String city)
+    {
+        return ResponseEntity.ok().body(bankService.retrieveBanksByCity(city));
     }
 }

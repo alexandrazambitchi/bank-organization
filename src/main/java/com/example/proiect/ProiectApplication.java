@@ -68,12 +68,6 @@ public class ProiectApplication implements CommandLineRunner {
         bankRepository.save(bank1);
         bankRepository.save(bank2);
 
-//        bank1.setClientList(Arrays.asList(client1, client2, client3));
-//        bank2.setClientList(Arrays.asList(client4));
-
-//        bankRepository.save(bank2);
-//        bankRepository.save(bank1);
-
         client1.setBanks(Arrays.asList(bank1));
         client2.setBanks(Arrays.asList(bank1));
         client3.setBanks(Arrays.asList(bank1));

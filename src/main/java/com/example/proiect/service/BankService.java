@@ -5,7 +5,6 @@ import com.example.proiect.exception.ClientNotFoundException;
 import com.example.proiect.exception.EmployeeNotFoundException;
 import com.example.proiect.model.*;
 import com.example.proiect.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -29,8 +28,6 @@ public class BankService {
         this.paymentRepository = paymentRepository;
     }
 
-
-
     public BankDetails saveNewBankDetails(BankDetails bankDetails) {
         return bankDetailsRepository.save(bankDetails);
     }
@@ -49,7 +46,6 @@ public class BankService {
 
         return employeeRepository.save(employee);
     }
-
 
     public Client saveNewClient(Client client, int employeeId, int bankId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
@@ -88,4 +84,30 @@ public class BankService {
     public List<Client> retrieveClients() {
         return clientRepository.findAll();
     }
+
+    public List<Client> retrieveClientsByAccounts(String currency) {
+        return clientRepository.findClientsByAccountCurrency(currency);
+    }
+
+    public List<Account> retrieveAccountsByCurrency(String currency) {
+        return accountRepository.findAccountByCurrency(currency);
+    }
+
+    public List<Client> retrieveClientsByEmployeeName(String employeeName) {
+        return clientRepository.findClientsByEmployeeName(employeeName);
+    }
+
+    public List<Employee> retrieveEmployeesManagingFirms(String clientType) {
+        return employeeRepository.findEmployeesManagingFirms(clientType);
+    }
+
+    public List<Client> retrieveClientsPayments(Integer value) {
+        return clientRepository.findClientsByPayments(value);
+    }
+
+    public List<Bank> retrieveBanksByCity(String city) {
+        return bankRepository.findBanksByCity(city);
+    }
+
+
 }
