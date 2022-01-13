@@ -12,7 +12,4 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 
     @Query("select c from Client c join Employee e on c.employee.employeeId = e.employeeId where e.employeeName = ?1")
     List<Client> findClientsByEmployeeName(String employeeName);
-
-    @Query("select distinct c from Client c join Payment p on c.clientId = p.client.clientId where p.paymentValue >= ?1")
-    List<Client> findClientsByPayments(Integer value);
 }

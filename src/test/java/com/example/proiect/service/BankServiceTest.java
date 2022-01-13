@@ -19,6 +19,16 @@ class BankServiceTest {
 
     @InjectMocks
     private BankService bankService;
+    @InjectMocks
+    private AccountService accountService;
+    @InjectMocks
+    private BankDetailsService bankDetailsService;
+    @InjectMocks
+    private ClientService clientService;
+    @InjectMocks
+    private EmployeeService employeeService;
+    @InjectMocks
+    private PaymentService paymentService;
 
     @Mock
     private AccountRepository accountRepository;
@@ -39,7 +49,7 @@ class BankServiceTest {
         BankDetails bankDetails1 = new BankDetails("address1", "city1");
 
         when(bankDetailsRepository.save(bankDetails1)).thenReturn(bankDetails1);
-        BankDetails result = bankService.saveBankDetails(bankDetails1);
+        BankDetails result = bankDetailsService.saveBankDetails(bankDetails1);
 
         assertNotNull(result);
         assertEquals(bankDetails1.getAddress(), result.getAddress());
@@ -72,7 +82,7 @@ class BankServiceTest {
         when(bankRepository.findById(bankId)).thenReturn(Optional.of(bank));
         when(employeeRepository.save(employee)).thenReturn(employee);
 
-        Employee result = bankService.saveEmployee(employee, bankId);
+        Employee result = employeeService.saveEmployee(employee, bankId);
 
         assertNotNull(result);
         assertEquals(employee.getEmployeeName(), result.getEmployeeName());
@@ -92,7 +102,7 @@ class BankServiceTest {
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         when(clientRepository.save(client)).thenReturn(client);
 
-        Client result = bankService.saveClient(client, employeeId, bankId);
+        Client result = clientService.saveClient(client, employeeId, bankId);
 
         assertNotNull(result);
         assertEquals(client.getClientName(), result.getClientName());
@@ -111,7 +121,7 @@ class BankServiceTest {
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(accountRepository.save(account)).thenReturn(account);
 
-        Account result = bankService.saveAccount(account, clientId);
+        Account result = accountService.saveAccount(account, clientId);
 
         assertNotNull(result);
         assertEquals(account.getAccountType(), result.getAccountType());
@@ -130,7 +140,7 @@ class BankServiceTest {
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
         when(paymentRepository.save(payment)).thenReturn(payment);
 
-        Payment result = bankService.savePayment(payment, clientId);
+        Payment result = paymentService.savePayment(payment, clientId);
 
         assertNotNull(result);
         assertEquals(payment.getPaymentValue(), result.getPaymentValue());
@@ -148,7 +158,29 @@ class BankServiceTest {
         when(bankRepository.findById(bankId)).thenReturn(Optional.of(bank));
 
         try{
-            Employee result = bankService.saveEmployee(employee, bankId);
+            Employee result = employeeService.saveEmployee(employee, bankId);
+        }catch (RuntimeException e) {
+            assertEquals("Some exception occured", e.getMessage());
+            verify(bankRepository, times(0)).findById(bankId);
+        }
+    }
+
+    @Test
+    @DisplayName("Save employee using negative flow")
+    void saveClientNegativeFlow() {
+        int bankId = 1;
+        int employeeId = 1;
+
+        Bank bank = new Bank("BRD");
+        Employee employee = new Employee("Ana");
+        Client client = new Client("Maria", "person");
+
+        when(bankRepository.findById(bankId)).thenReturn(Optional.of(bank));
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(clientRepository.save(client)).thenReturn(client);
+
+        try{
+            Client result = clientService.saveClient(client, employeeId, bankId);
         }catch (RuntimeException e) {
             assertEquals("Some exception occured", e.getMessage());
             verify(bankRepository, times(0)).findById(bankId);
