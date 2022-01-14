@@ -31,7 +31,7 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> retrieveEmployeesManagingFirms(String clientType) {
-        return employeeRepository.findEmployeesManagingFirms(clientType);
+    public List<Employee> retrieveEmployeesManaging(String clientType) {
+        return employeeRepository.findEmployeesManaging(clientType);
     }
 }

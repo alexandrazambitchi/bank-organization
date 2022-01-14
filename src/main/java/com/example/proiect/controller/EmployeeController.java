@@ -26,9 +26,9 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employeeService.retrieveEmployees());
     }
 
-    @GetMapping("/employeesManagingFirms")
-    public ResponseEntity<List<Employee>> retrieveEmployeesManagingFirms(@RequestParam String clientType){
-        return ResponseEntity.ok().body(employeeService.retrieveEmployeesManagingFirms(clientType));
+    @GetMapping("/employeesManaging")
+    public ResponseEntity<List<Employee>> retrieveEmployeesManaging(@RequestParam String clientType){
+        return ResponseEntity.ok().body(employeeService.retrieveEmployeesManaging(clientType));
     }
 
     @PutMapping("/update")
